@@ -47,11 +47,11 @@ provide `src`, the path for the file to load.
 
 amitaRegular =
 	fontFamily: "Amita"
-	fontWeight: 500
+	fontWeight: 400
 
 amitaBold =
 	fontFamily: "Amita"
-	fontWeight: 600
+	fontWeight: 700
 
 monoton =
 	fontFamily: "Monoton"
@@ -66,12 +66,12 @@ loadWebFonts(amitaRegular, amitaBold, monoton)
 
 amitaRegular =
 	fontFamily: "Amita"
-	fontWeight: 500
+	fontWeight: 400
 	src: "Amita-Regular.ttf"
 
 amitaBold =
 	fontFamily: "Amita"
-	fontWeight: 600
+	fontWeight: 700
 	src: "Amita-Bold.ttf"
 
 monoton =
