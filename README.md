@@ -56,6 +56,7 @@ monoton =
 
 loadWebFonts(amitaRegular, amitaBold, monoton)
 
+```
 
 ## loadLocalFonts(fonts...)
 
