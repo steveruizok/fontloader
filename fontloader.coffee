@@ -225,7 +225,7 @@ loadFonts = (fonts) ->
 			complete(true)
 			return
 		
-		Utils.delay .125, -> loopForFonts(i)
+		Utils.delay .5, -> loopForFonts(i)
 	
 	# Finish up - clear divs and restart the prototype if we looped
 
