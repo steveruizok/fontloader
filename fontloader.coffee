@@ -37,11 +37,11 @@ If you're loading web fonts...
 # Usage
 
 The module's two functions, loadLocalFonts and loadWebFonts, both take one or more objects
-as an array. These objects share two properties: `fontFamily` (the name of the font)
+as separate arguments. These objects share two properties: `fontFamily` (the name of the font)
 and `fontWeight` (the weight to load). If you're loading local fonts, you'll also need to
 provide `src`, the path for the file to load.
 
-## loadWebFonts(fonts...)
+## loadWebFonts(fonts)
 
 ```coffeescript
 
@@ -60,7 +60,7 @@ monoton =
 loadWebFonts([amitaRegular, amitaBold, monoton])
 
 
-## loadLocalFonts(fonts...)
+## loadLocalFonts(fonts)
 
 ```coffeescript
 
@@ -148,6 +148,7 @@ exports.loadLocalFonts = (fonts) ->
 			@font-face {
 				font-family: #{font.fontFamily};
 				font-weight: #{font.fontWeight ? 400};
+				font-style: #{font.fontStyle ? "normal"};
 				src: url(#{font.src});
 				}
 
