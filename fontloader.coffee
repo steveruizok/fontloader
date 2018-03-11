@@ -37,7 +37,7 @@ If you're loading web fonts...
 # Usage
 
 The module's two functions, loadLocalFonts and loadWebFonts, both take one or more objects
-as separate arguments. These objects share two properties: `fontFamily` (the name of the font)
+as an array. These objects share two properties: `fontFamily` (the name of the font)
 and `fontWeight` (the weight to load). If you're loading local fonts, you'll also need to
 provide `src`, the path for the file to load.
 
@@ -57,7 +57,7 @@ monoton =
 	fontFamily: "Monoton"
 	fontWeight: 500
 
-loadWebFonts(amitaRegular, amitaBold, monoton)
+loadWebFonts([amitaRegular, amitaBold, monoton])
 
 
 ## loadLocalFonts(fonts...)
@@ -79,7 +79,7 @@ monoton =
 	fontWeight: 500
 	src: "Monoton-Regular.ttf"
 
-loadLocalFonts(amitaRegular, amitaBold, monoton)
+loadLocalFonts([amitaRegular, amitaBold, monoton])
 
 ```
 
@@ -131,7 +131,9 @@ once they have all loaded.
 # Load Local Fonts
 
 
-exports.loadLocalFonts = (fonts...) ->
+exports.loadLocalFonts = (fonts) ->
+
+	if not _.isArray(fonts) then fonts = [fonts]
 
 	Framer.DefaultContext.visible = false
 	
@@ -145,9 +147,10 @@ exports.loadLocalFonts = (fonts...) ->
 		cssString += """
 			@font-face {
 				font-family: #{font.fontFamily};
-				font-weight: url(#{font.fontWeight ? 400});
+				font-weight: #{font.fontWeight ? 400};
 				src: url(#{font.src});
 				}
+
 			"""
 			
 	Utils.insertCSS(cssString)
@@ -157,7 +160,9 @@ exports.loadLocalFonts = (fonts...) ->
 
 # Load Web Fonts
 
-exports.loadWebFonts = (fonts...) ->
+exports.loadWebFonts = (fonts) ->
+
+	if not _.isArray(fonts) then fonts = [fonts]
 
 	Framer.DefaultContext.visible = false
 	
