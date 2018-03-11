@@ -1,4 +1,8 @@
-# fontloader
+###
+
+Fontloader
+@steveruizok
+
 
 # Introduction
 
@@ -12,7 +16,6 @@ your code runs.
 1. Drop `fontloader.coffee` into your project's modules folder
 2. Place local copies of your fonts (ie, 'YourFont-Regular.ttf) into your project's folder
 3. Require this module at the top your project's code.
-
 
 If you're loading local files...
 
@@ -63,7 +66,7 @@ loadWebFonts(amitaRegular, amitaBold, monoton)
 
 amitaRegular =
 	fontFamily: "Amita"
-	fontWeight: 400
+	fontWeight: 500
 	src: "Amita-Regular.ttf"
 
 amitaBold =
@@ -120,3 +123,133 @@ correct size and appearance, but the TextLayer will remain at the first size.
 In addition to giving an easy way to load local fonts, this module tests
 to see whether each of your fonts have loaded, then restarts the prototype 
 once they have all loaded.
+
+###
+
+
+
+# Load Local Fonts
+
+
+exports.loadLocalFonts = (fonts...) ->
+
+	Framer.DefaultContext.visible = false
+	
+	# ----------------
+	# CSS Insert
+	
+	cssString = ""
+	
+	for font in fonts
+	
+		cssString += """
+			@font-face {
+				font-family: #{font.fontFamily};
+				font-weight: url(#{font.fontWeight ? 400});
+				src: url(#{font.src});
+				}
+			"""
+			
+	Utils.insertCSS(cssString)
+
+	loadFonts(fonts)
+
+
+# Load Web Fonts
+
+exports.loadWebFonts = (fonts...) ->
+
+	Framer.DefaultContext.visible = false
+	
+	# ----------------
+	# CSS Insert
+	
+	for font in fonts
+		Utils.loadWebFont(font.fontFamily, font.fontWeight ? 400)
+
+	loadFonts(fonts)
+
+
+loadFonts = (fonts) ->
+
+	# ----------------
+	# Test Elements
+
+
+	testBed = new Layer
+	
+	controlLayer = new TextLayer
+		name: "Control Test"
+		parent: testBed
+		text: "Hello world!"
+		fontFamily: "thisIsNotAFont"
+		fontSize: 100
+	
+	# ----------------
+	# Functions
+
+	# Test for fonts
+
+	tests = []
+
+	testForFonts = ->
+	
+		# create test divs
+
+		layer?.destroy() for layer in tests
+
+		tests = fonts.map (f) ->
+
+			return new TextLayer
+				name: "Font Family Test"
+				parent: testBed
+				text: "Hello world!"
+				fontSize: 100
+				fontFamily: f.fontFamily
+		
+		results = tests.map (testLayer) ->
+			return testLayer.width is controlLayer.width
+		
+		return !_.some(results)
+	
+	# Loop the test until the font is found
+	
+	loopForFonts = (i) ->
+		if i > 20
+			throw "Couldn't find that font."
+		
+		i++
+		fontsAreLoaded = testForFonts()
+		
+		if fontsAreLoaded
+			complete(true)
+			return
+		
+		Utils.delay .125, -> loopForFonts(i)
+	
+	# Finish up - clear divs and restart the prototype if we looped
+
+	complete = (reset = false) ->
+		testBed.destroy()
+
+		Framer.DefaultContext.visible = true
+
+		if reset
+			Utils.delay .01, ->
+				Framer.CurrentContext.reset()
+				CoffeeScript.load("app.coffee")
+		
+	# ----------------
+	# Kickoff
+
+	# Before trying to loop, see if the fonts are already loaded. If
+	# they are, clean up and don't loop again; if not, start the loop.
+	# Since this code will run even after our loop completes, we want 
+	# to be sure not to get stuck in an endless reload loop.
+
+	fontsAreLoaded = testForFonts()
+
+	if fontsAreLoaded
+		complete()
+	else
+		loopForFonts(0)
