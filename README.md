@@ -84,9 +84,8 @@ loadLocalFonts(amitaRegular, amitaBold, monoton)
 ## Local Paths
 
 By default, this module will look for fonts in the root of your project's
-folder (i.e. myProject.framer/Monoton-Regular.ttf). If I wanted to put the
-font somewhere else, such as a folder called fonts, I would include this
-in the `src`.
+folder (e.g. myProject.framer/Monoton-Regular.ttf). To use a different folder,
+such as a folder called fonts, include this in the `src` path:
 
 
 ```coffeescript
