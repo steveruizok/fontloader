@@ -75,4 +75,5 @@ new TextLayer
 	x: 32
 	y: Align.bottom(-48)
 	fontSize: 18
+	fontWeight: 600
 	text: "github.com/steveruizok/fontloader"
