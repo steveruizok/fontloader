@@ -183,6 +183,7 @@ loadFonts = (fonts) ->
 
 
 	testBed = new Layer
+		x: -9999
 	
 	controlLayer = new TextLayer
 		name: "Control Test"
@@ -209,7 +210,7 @@ loadFonts = (fonts) ->
 			return new TextLayer
 				name: "Font Family Test"
 				parent: testBed
-				text: "Hello world!"
+				text: "abcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()"
 				fontSize: 100
 				fontFamily: f.fontFamily
 		
