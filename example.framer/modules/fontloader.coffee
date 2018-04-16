@@ -176,48 +176,73 @@ exports.loadWebFonts = (fonts) ->
 	loadFonts(fonts)
 
 
+
 loadFonts = (fonts) ->
 
 	# ----------------
 	# Test Elements
 
 
-	testBed = new Layer
-	
-	controlLayer = new TextLayer
-		name: "Control Test"
-		parent: testBed
-		text: "Hello world!"
-		fontFamily: "thisIsNotAFont"
-		fontSize: 100
+	testBed = document.createElement "div"
+
+	_.assign testBed.style,
+		position: "absolute"
+		fontFamily: "nonsense"
+		padding: 0
+		opacity: 0
+
+	document.body.appendChild(testBed)
+
+
+	controlSpan = document.createElement "span"
+
+	_.assign controlSpan.style,	
+		position: "absolute"
+		fontSize: "200px"	
+		top: 0
+		left: 0
+
+	controlSpan.textContent = "Hello world!"
+
+	testBed.appendChild(controlSpan)	
+
+
+	tests = fonts.map (f, i) ->
+
+		testSpan = document.createElement "span"
+
+		testSpan.textContent = "Hello world!"
+
+		_.assign testSpan.style,
+			fontFamily: f.fontFamily
+			position: "absolute"
+			fontSize: "200px"
+			top: (100 * i) + "px"
+			left: 0
+
+		testBed.appendChild(testSpan)
+
+		return testSpan
+
 	
 	# ----------------
 	# Functions
 
-	# Test for fonts
 
-	tests = []
+	# Test for fonts
 
 	testForFonts = ->
 	
-		# create test divs
+		results = tests.map (testSpan) ->
+			return testSpan.clientWidth isnt controlSpan.clientWidth
 
-		layer?.destroy() for layer in tests
+		for result in results
+			unless result
+				return false
 
-		tests = fonts.map (f) ->
-
-			return new TextLayer
-				name: "Font Family Test"
-				parent: testBed
-				text: "Hello world!"
-				fontSize: 100
-				fontFamily: f.fontFamily
-		
-		results = tests.map (testLayer) ->
-			return testLayer.width is controlLayer.width
-		
-		return !_.some(results)
+		return true
 	
+
 	# Loop the test until the font is found
 	
 	loopForFonts = (i) ->
@@ -233,10 +258,11 @@ loadFonts = (fonts) ->
 		
 		Utils.delay .5, -> loopForFonts(i)
 	
+
 	# Finish up - clear divs and restart the prototype if we looped
 
 	complete = (reset = false) ->
-		testBed.destroy()
+		document.body.removeChild(testBed)
 
 		Framer.DefaultContext.visible = true
 
@@ -245,6 +271,7 @@ loadFonts = (fonts) ->
 				Framer.CurrentContext.reset()
 				CoffeeScript.load("app.coffee")
 		
+	
 	# ----------------
 	# Kickoff
 
@@ -252,6 +279,9 @@ loadFonts = (fonts) ->
 	# they are, clean up and don't loop again; if not, start the loop.
 	# Since this code will run even after our loop completes, we want 
 	# to be sure not to get stuck in an endless reload loop.
+
+
+	
 
 	fontsAreLoaded = testForFonts()
 
