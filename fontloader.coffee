@@ -133,7 +133,8 @@ once they have all loaded.
 
 exports.loadLocalFonts = (fonts) ->
 
-	if not _.isArray(fonts) then fonts = [fonts]
+	unless _.isArray(fonts)
+		fonts = [fonts]
 
 	Framer.DefaultContext.visible = false
 	
