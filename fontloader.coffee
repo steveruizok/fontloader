@@ -184,6 +184,7 @@ loadFonts = (fonts) ->
 	# Test Elements
 
 
+<<<<<<< HEAD
 	testBed = document.createElement "div"
 
 	_.assign testBed.style,
@@ -225,6 +226,16 @@ loadFonts = (fonts) ->
 
 		return testSpan
 
+=======
+	testBed = new Layer
+	
+	controlLayer = new TextLayer
+		name: "Control Test"
+		parent: testBed
+		text: "Hello world!"
+		fontFamily: "thisIsNotAFont"
+		fontSize: 100
+>>>>>>> parent of e844a5f... update
 	
 	# ----------------
 	# Functions
@@ -241,7 +252,21 @@ loadFonts = (fonts) ->
 			unless result
 				return false
 
+<<<<<<< HEAD
 		return true
+=======
+			return new TextLayer
+				name: "Font Family Test"
+				parent: testBed
+				text: "Hello world!"
+				fontSize: 100
+				fontFamily: f.fontFamily
+		
+		results = tests.map (testLayer) ->
+			return testLayer.width is controlLayer.width
+		
+		return !_.some(results)
+>>>>>>> parent of e844a5f... update
 	
 
 	# Loop the test until the font is found
