@@ -1,5 +1,7 @@
 # fontloader
 
+> 👋 I'm no longer updating this project and it might not work in newer versions!
+
 # Introduction
 
 Using non-standard fonts can create big headaches for your Framer projects. This
